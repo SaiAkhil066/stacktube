@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 64" width="300" height="64" role="img" aria-label="StackTube">
+  <defs>
+    <clipPath id="play">
+      <path d="M12 6.5 L58 30.2 Q61.5 32 58 33.8 L12 57.5 Q8 59.5 8 55 L8 9 Q8 4.5 12 6.5 Z"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#play)">
+    <rect x="0" y="4"  width="64" height="15.5" fill="#9C5BD1"/>
+    <rect x="0" y="24.25" width="64" height="15.5" fill="#1FA38C"/>
+    <rect x="0" y="44.5" width="64" height="15.5" fill="#E0A21A"/>
+  </g>
+  <text x="76" y="43" font-family="'Schibsted Grotesk', 'Segoe UI', sans-serif" font-size="34" font-weight="800" letter-spacing="-1" fill="#14172B">stack<tspan fill="#5E6488" font-weight="500">tube</tspan></text>
+  <rect x="262" y="18" width="4" height="30" rx="1" fill="#1FA38C"/>
+</svg>

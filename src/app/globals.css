@@ -1,26 +1,190 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root,
+[data-theme="dark"] {
+  --bg: #0f1222;
+  --surface: #171b2e;
+  --surface-2: #1f2440;
+  --line: #2a3050;
+  --fg: #e7e9f5;
+  --muted: #8a90b2;
+  --accent: #5b6cff;
+  --accent-hover: #7482ff;
+  --accent-fg: #ffffff;
+  --kw: #c792ea;
+  --str: #7fdbca;
+  --fn: #ffcb6b;
+  --num: #f78c6c;
+  --danger: #ff6b81;
+  --code-bg: #0b0e1b;
+  --overlay: rgb(8 10 20 / 0.72);
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #eceef6;
+  --line: #dde0ec;
+  --fg: #14172b;
+  --muted: #5e6488;
+  --accent: #4453f0;
+  --accent-hover: #3342d8;
+  --accent-fg: #ffffff;
+  --kw: #8a45c4;
+  --str: #127f6d;
+  --fn: #a0700a;
+  --num: #c4541f;
+  --danger: #d93a57;
+  --code-bg: #f1f2f8;
+  --overlay: rgb(20 23 43 / 0.5);
+  color-scheme: light;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-fg: var(--accent-fg);
+  --color-kw: var(--kw);
+  --color-str: var(--str);
+  --color-fn: var(--fn);
+  --color-danger: var(--danger);
+  --color-code: var(--code-bg);
+  --font-sans: var(--font-ui);
+  --font-mono: var(--font-code);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--bg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-ui), system-ui, sans-serif;
+  font-feature-settings: "ss01";
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Markdown (descriptions, comments) */
+.prose-dev {
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.prose-dev > * + * {
+  margin-top: 0.6em;
+}
+.prose-dev a {
+  color: var(--accent);
+}
+.prose-dev a:hover {
+  text-decoration: underline;
+}
+.prose-dev ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.prose-dev ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+.prose-dev blockquote {
+  border-left: 3px solid var(--line);
+  padding-left: 0.75rem;
+  color: var(--muted);
+}
+.prose-dev :not(pre) > code {
+  font-family: var(--font-code), monospace;
+  font-size: 0.88em;
+  background: var(--surface-2);
+  padding: 0.1em 0.35em;
+  border-radius: 5px;
+}
+.prose-dev pre {
+  font-family: var(--font-code), monospace;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+  overflow-x: auto;
+}
+
+/* highlight.js tokens mapped to the brand's syntax colours */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-type,
+.hljs-meta .hljs-keyword {
+  color: var(--kw);
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-attr,
+.hljs-symbol,
+.hljs-template-tag {
+  color: var(--str);
+}
+.hljs-title,
+.hljs-title.function_,
+.hljs-section,
+.hljs-name {
+  color: var(--fn);
+}
+.hljs-number,
+.hljs-literal,
+.hljs-variable.constant_ {
+  color: var(--num);
+}
+.hljs-comment,
+.hljs-quote {
+  color: var(--muted);
+  font-style: italic;
+}
+.hljs-attribute,
+.hljs-property,
+.hljs-tag {
+  color: var(--accent);
+}
+.hljs-meta {
+  color: var(--muted);
 }
