@@ -19,7 +19,7 @@ export function PlaylistTile({ t }: { t: Tile }) {
           {t.count} {t.count === 1 ? "video" : "videos"}
         </span>
       </div>
-      <p className="mt-2 font-semibold group-hover:underline">{t.title}</p>
+      <p className="mt-2 font-medium group-hover:underline">{t.title}</p>
       {t.note && <p className="flex items-center gap-1 text-xs text-muted">{t.note}</p>}
     </Link>
   );

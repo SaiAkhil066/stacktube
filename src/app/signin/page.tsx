@@ -27,8 +27,8 @@ export default async function SignInPage({ searchParams }: PageProps<"/signin">)
   return (
     <div className="grid min-h-[calc(100dvh-3.5rem)] place-items-center px-4">
       <div className="w-full max-w-sm rounded-2xl border border-line bg-surface p-8">
-        <LogoMark size={44} />
-        <h1 className="mt-5 text-2xl font-extrabold tracking-[-0.02em]">Sign in to {APP_NAME}</h1>
+        <LogoMark size={32} />
+        <h1 className="mt-5 text-2xl font-bold tracking-[-0.02em]">Sign in to {APP_NAME}</h1>
         <p className="mt-2 text-sm text-muted">
           Your GitHub account becomes your channel. We only read your public profile.
         </p>
@@ -42,7 +42,7 @@ export default async function SignInPage({ searchParams }: PageProps<"/signin">)
         >
           <button
             disabled={!githubConfigured}
-            className="flex w-full items-center justify-center gap-3 rounded-xl bg-fg px-4 py-3 font-semibold text-bg hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex w-full items-center justify-center gap-3 rounded-xl bg-fg px-4 py-3 font-medium text-bg hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <GitHubIcon />
             Continue with GitHub
@@ -63,7 +63,7 @@ export default async function SignInPage({ searchParams }: PageProps<"/signin">)
                 await signIn("demo", { redirectTo: callbackUrl });
               }}
             >
-              <button className="w-full rounded-xl border border-line px-4 py-3 font-semibold hover:bg-surface-2">
+              <button className="w-full rounded-xl border border-line px-4 py-3 font-medium hover:bg-surface-2">
                 Continue as demo developer
               </button>
             </form>

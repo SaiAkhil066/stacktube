@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { ArrowDown, ArrowUp, Loader2, Plus, Trash2 } from "lucide-react";
 import { lookupYouTube, saveVideo, type VideoInput } from "@/lib/actions";
-import { LEVELS, SNIPPET_LANGUAGES, TOPICS } from "@/lib/config";
+import { CATEGORIES, LEVELS, SNIPPET_LANGUAGES, TOPICS } from "@/lib/config";
 import { formatDuration, parseTimestamp } from "@/lib/format";
 import { parseYouTubeUrl, thumbnailUrl } from "@/lib/youtube";
 
@@ -17,6 +17,7 @@ export type VideoFormInitial = {
   title: string;
   description: string;
   topic: string | null;
+  category: string;
   level: string;
   tags: string[];
   repoUrl: string | null;
@@ -25,7 +26,7 @@ export type VideoFormInitial = {
   snippets: { atSeconds: number; title: string; language: string; code: string }[];
 };
 
-const field = "w-full rounded-lg border border-line bg-bg px-3 py-2 text-sm outline-none focus:border-accent";
+const field = "w-full rounded-lg border border-line bg-bg px-3 py-2 text-sm outline-none focus:border-link";
 const label = "mb-1.5 block text-sm font-medium";
 
 let keySeq = 0;
@@ -39,6 +40,7 @@ export function VideoForm({ initial }: { initial?: VideoFormInitial }) {
   const [description, setDescription] = useState(initial?.description ?? "");
   const [topic, setTopic] = useState(initial?.topic ?? "");
   const [level, setLevel] = useState(initial?.level ?? "beginner");
+  const [category, setCategory] = useState(initial?.category ?? "tutorial");
   const [tags, setTags] = useState(initial?.tags.join(", ") ?? "");
   const [repoUrl, setRepoUrl] = useState(initial?.repoUrl ?? "");
   const [originalAuthor, setOriginalAuthor] = useState(initial?.originalAuthor ?? "");
@@ -92,6 +94,7 @@ export function VideoForm({ initial }: { initial?: VideoFormInitial }) {
       title,
       description,
       topic: topic || null,
+      category,
       level: level as VideoInput["level"],
       tags: tags
         .split(",")
@@ -133,7 +136,7 @@ export function VideoForm({ initial }: { initial?: VideoFormInitial }) {
               type="button"
               onClick={lookup}
               disabled={!url || looking}
-              className="flex shrink-0 items-center gap-2 rounded-lg bg-surface-2 px-4 text-sm font-semibold hover:bg-line disabled:opacity-50"
+              className="flex shrink-0 items-center gap-2 rounded-lg bg-surface-2 px-4 text-sm font-medium hover:bg-line disabled:opacity-50"
             >
               {looking && <Loader2 className="size-4 animate-spin" />}
               Fetch details
@@ -173,7 +176,7 @@ export function VideoForm({ initial }: { initial?: VideoFormInitial }) {
         <section aria-labelledby="snippets-heading" className="rounded-xl border border-line bg-surface p-4">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 id="snippets-heading" className="font-semibold">
+              <h2 id="snippets-heading" className="font-medium">
                 Code snippets
               </h2>
               <p className="mt-1 text-sm text-muted">
@@ -183,7 +186,7 @@ export function VideoForm({ initial }: { initial?: VideoFormInitial }) {
             <button
               type="button"
               onClick={() => setSnippets((all) => [...all, { key: newKey(), at: "0:00", title: "", language: "javascript", code: "" }])}
-              className="flex shrink-0 items-center gap-1.5 rounded-full bg-surface-2 px-3 py-1.5 text-sm font-semibold hover:bg-line"
+              className="flex shrink-0 items-center gap-1.5 rounded-full bg-surface-2 px-3 py-1.5 text-sm font-medium hover:bg-line"
             >
               <Plus className="size-4" />
               Add snippet
@@ -286,6 +289,21 @@ export function VideoForm({ initial }: { initial?: VideoFormInitial }) {
           </select>
         </div>
 
+        <fieldset>
+          <legend className={label}>Kind of video</legend>
+          <div className="flex gap-2">
+            {CATEGORIES.map((c) => (
+              <label
+                key={c.slug}
+                className={`cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium ${category === c.slug ? "bg-fg text-bg" : "bg-surface-2 hover:bg-line"}`}
+              >
+                <input type="radio" name="category" value={c.slug} checked={category === c.slug} onChange={() => setCategory(c.slug)} className="sr-only" />
+                {c.label}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label htmlFor="topic" className={label}>
@@ -344,7 +362,7 @@ export function VideoForm({ initial }: { initial?: VideoFormInitial }) {
         )}
         <button
           disabled={saving}
-          className="flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-2.5 font-semibold text-accent-fg hover:bg-accent-hover disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-2.5 font-medium text-accent-fg hover:bg-accent-hover disabled:opacity-50"
         >
           {saving && <Loader2 className="size-4 animate-spin" />}
           {editing ? "Save changes" : "Publish"}

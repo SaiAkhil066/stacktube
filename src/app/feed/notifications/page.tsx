@@ -39,12 +39,12 @@ export default async function NotificationsPage() {
             return (
               <li key={n.id}>
                 <Link href={href} className="flex items-center gap-4 rounded-lg px-2 py-3 hover:bg-surface">
-                  <span className={cn("size-2 shrink-0 rounded-full", n.read ? "bg-transparent" : "bg-accent")} aria-label={n.read ? undefined : "Unread"} />
+                  <span className={cn("size-2 shrink-0 rounded-full", n.read ? "bg-transparent" : "bg-link")} aria-label={n.read ? undefined : "Unread"} />
                   {n.actor && <Avatar name={n.actor.name} image={n.actor.image} size={44} />}
                   <div className="min-w-0 flex-1 text-sm">
                     <p>
-                      <span className="font-semibold">{n.actor?.name ?? "Someone"}</span> {TEXT[n.type] ?? n.type}
-                      {n.video?.title && <span className="font-semibold"> {n.video.title}</span>}
+                      <span className="font-medium">{n.actor?.name ?? "Someone"}</span> {TEXT[n.type] ?? n.type}
+                      {n.video?.title && <span className="font-medium"> {n.video.title}</span>}
                     </p>
                     <p className="mt-0.5 text-xs text-muted">{timeAgo(n.createdAt)}</p>
                   </div>

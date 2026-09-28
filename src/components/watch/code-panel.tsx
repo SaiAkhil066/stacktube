@@ -38,12 +38,12 @@ export function CodePanel({ snippets }: { snippets: PanelSnippet[] }) {
     <section aria-labelledby={headingId} className="overflow-hidden rounded-xl border border-line bg-surface">
       <header className="flex items-center gap-2 border-b border-line px-4 py-2.5">
         <Code2 className="size-4 text-str" aria-hidden="true" />
-        <h2 id={headingId} className="text-sm font-semibold">
+        <h2 id={headingId} className="text-sm font-medium">
           Code in this video
         </h2>
         <span className="text-xs text-muted">{snippets.length}</span>
         <label className="ml-auto flex cursor-pointer items-center gap-2 text-xs text-muted">
-          <input type="checkbox" checked={follow} onChange={(e) => setFollow(e.target.checked)} className="accent-[var(--accent)]" />
+          <input type="checkbox" checked={follow} onChange={(e) => setFollow(e.target.checked)} className="accent-[var(--link)]" />
           Follow video
         </label>
       </header>
@@ -65,7 +65,7 @@ export function CodePanel({ snippets }: { snippets: PanelSnippet[] }) {
               <div className="flex items-center gap-2 px-3 pt-2 pb-1">
                 <button
                   onClick={() => seek(s.atSeconds)}
-                  className="rounded-md bg-surface-2 px-1.5 py-0.5 font-mono text-[11px] text-accent hover:bg-line"
+                  className="rounded-md bg-surface-2 px-1.5 py-0.5 font-mono text-[11px] text-link hover:bg-line"
                   aria-label={`Jump to ${formatDuration(s.atSeconds)}`}
                 >
                   {formatDuration(s.atSeconds)}

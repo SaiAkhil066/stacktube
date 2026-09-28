@@ -12,6 +12,7 @@ const cardFields = {
   createdAt: videos.createdAt,
   durationSeconds: videos.durationSeconds,
   topic: videos.topic,
+  category: videos.category,
   level: videos.level,
   isShort: videos.isShort,
   originalAuthor: videos.originalAuthor,
@@ -28,6 +29,7 @@ export type VideoCardData = {
   createdAt: Date;
   durationSeconds: number | null;
   topic: string | null;
+  category: string;
   level: string;
   isShort: boolean;
   originalAuthor: string | null;
@@ -51,6 +53,7 @@ function searchCondition(q: string): SQL | undefined {
 
 export async function listVideos(opts: {
   topic?: string;
+  category?: string;
   q?: string;
   level?: string;
   ownerId?: string;
@@ -64,6 +67,7 @@ export async function listVideos(opts: {
   const where: (SQL | undefined)[] = [];
   if (!opts.includePrivate) where.push(isPublic);
   if (opts.topic) where.push(eq(videos.topic, opts.topic));
+  if (opts.category) where.push(eq(videos.category, opts.category));
   if (opts.level) where.push(eq(videos.level, opts.level));
   if (opts.ownerId) where.push(eq(videos.ownerId, opts.ownerId));
   if (opts.shorts !== undefined) where.push(eq(videos.isShort, opts.shorts));
@@ -82,15 +86,19 @@ export async function listVideos(opts: {
     .limit(opts.limit ?? 48);
 }
 
-// Same topic first, then everything else by popularity.
-export async function listUpNext(video: { id: string; topic: string | null }) {
+// Same kind of video first (funny next to funny), then same topic, then popularity.
+export async function listUpNext(video: { id: string; topic: string | null; category: string }) {
   const db = await getDb();
   return db
     .select(cardFields)
     .from(videos)
     .innerJoin(users, eq(users.id, videos.ownerId))
     .where(and(isPublic, sql`${videos.id} <> ${video.id}`, eq(videos.isShort, false)))
-    .orderBy(sql`case when ${videos.topic} = ${video.topic ?? ""} then 0 else 1 end`, desc(videos.views))
+    .orderBy(
+      sql`case when ${videos.category} = ${video.category} then 0 else 1 end`,
+      sql`case when ${videos.topic} = ${video.topic ?? ""} then 0 else 1 end`,
+      desc(videos.views),
+    )
     .limit(20);
 }
 

@@ -5,7 +5,7 @@ import { refresh, revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { getDb, schema } from "@/db";
-import { LEVELS, SNIPPET_LANGUAGES, TOPICS } from "@/lib/config";
+import { CATEGORIES, LEVELS, SNIPPET_LANGUAGES, TOPICS } from "@/lib/config";
 import { getViewer, requireViewer } from "@/lib/session";
 import { fetchOEmbed, parseYouTubeUrl } from "@/lib/youtube";
 
@@ -255,6 +255,7 @@ const videoSchema = z.object({
   title: z.string().trim().min(1, "Add a title.").max(150, "Titles are limited to 150 characters."),
   description: z.string().max(10_000),
   topic: z.enum(TOPICS.map((t) => t.slug) as [string, ...string[]]).nullable(),
+  category: z.enum(CATEGORIES.map((c) => c.slug) as [string, ...string[]]),
   level: z.enum(LEVELS),
   tags: z.array(z.string().trim().toLowerCase().min(1).max(30)).max(15),
   repoUrl: z
@@ -292,6 +293,7 @@ export async function saveVideo(input: VideoInput, editingId?: string): Promise<
     title: data.title,
     description: data.description,
     topic: data.topic,
+    category: data.category,
     level: data.level,
     tags: [...new Set(data.tags)],
     repoUrl: data.repoUrl,

@@ -24,6 +24,7 @@ export default async function EditVideoPage({ params }: PageProps<"/studio/video
           title: video.title,
           description: video.description,
           topic: video.topic,
+          category: video.category,
           level: video.level,
           tags: video.tags,
           repoUrl: video.repoUrl,

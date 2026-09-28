@@ -44,6 +44,8 @@ export const videos = pgTable(
     title: text("title").notNull(),
     description: text("description").notNull().default(""),
     topic: text("topic"),
+    // "tutorial" | "comedy" | "talk"
+    category: text("category").notNull().default("tutorial"),
     level: text("level").notNull().default("beginner"),
     tags: text("tags").array().notNull().default([]),
     repoUrl: text("repo_url"),
@@ -55,7 +57,7 @@ export const videos = pgTable(
     views: integer("views").notNull().default(0),
     createdAt: createdAt(),
   },
-  (t) => [index("videos_owner_idx").on(t.ownerId), index("videos_topic_idx").on(t.topic)],
+  (t) => [index("videos_owner_idx").on(t.ownerId), index("videos_topic_idx").on(t.topic), index("videos_category_idx").on(t.category)],
 );
 
 // Code shown next to the player, highlighted when the video reaches `atSeconds`.

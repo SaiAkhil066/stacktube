@@ -25,11 +25,20 @@ async function connect(): Promise<DB> {
   mkdirSync(path.dirname(dataDir), { recursive: true });
   const client = new PGlite(dataDir);
   const db = drizzle(client, { schema });
-  await migrate(db, { migrationsFolder: MIGRATIONS });
+  try {
+    await migrate(db, { migrationsFolder: MIGRATIONS });
+  } catch (err) {
+    // Usually a dev server that was killed mid-write, or a second process using the same folder.
+    throw new Error(
+      "The local database in .data/ can't be opened. Stop every running `pnpm dev`, delete the .data folder, and start again. " +
+        "It will be recreated with the demo videos.",
+      { cause: err },
+    );
+  }
   // Same query API as postgres-js; the cast keeps one DB type across the app.
   const typed = db as unknown as DB;
-  const { seedIfEmpty } = await import("./seed");
-  await seedIfEmpty(typed);
+  const { seed } = await import("./seed");
+  await seed(typed);
   return typed;
 }
 

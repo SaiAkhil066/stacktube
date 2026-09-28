@@ -80,9 +80,9 @@ export default async function ChannelPage({ params, searchParams }: Props) {
       <header className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
         <Avatar name={user.name} image={user.image} size={120} className="size-20 sm:size-[120px]" />
         <div className="min-w-0 flex-1">
-          <h1 className="text-3xl font-extrabold tracking-[-0.02em]">{user.name}</h1>
+          <h1 className="text-3xl font-bold tracking-[-0.02em]">{user.name}</h1>
           <p className="mt-1 text-sm text-muted">
-            <span className="font-semibold text-fg">@{user.handle}</span>, {formatCount(channel.subscribers)} subscribers,{" "}
+            <span className="font-medium text-fg">@{user.handle}</span>, {formatCount(channel.subscribers)} subscribers,{" "}
             {channel.videoCount} videos
           </p>
           {user.bio && <p className="mt-2 line-clamp-2 max-w-2xl text-sm text-muted">{user.bio}</p>}
@@ -90,7 +90,7 @@ export default async function ChannelPage({ params, searchParams }: Props) {
             {isSelf ? (
               <>
                 <ChannelEditor name={user.name} bio={user.bio ?? ""} />
-                <Link href="/studio" className="rounded-full bg-surface-2 px-4 py-2 text-sm font-semibold hover:bg-line">
+                <Link href="/studio" className="rounded-full bg-surface-2 px-4 py-2 text-sm font-medium hover:bg-line">
                   Manage videos
                 </Link>
               </>
@@ -108,7 +108,7 @@ export default async function ChannelPage({ params, searchParams }: Props) {
             href={t === "videos" ? `/@${user.handle}` : `/@${user.handle}/${t}`}
             aria-current={tab === t ? "page" : undefined}
             className={cn(
-              "-mb-px border-b-2 pb-3 text-[15px] font-semibold capitalize",
+              "-mb-px border-b-2 pb-3 text-[15px] font-medium capitalize",
               tab === t ? "border-fg" : "border-transparent text-muted hover:text-fg",
             )}
           >
@@ -138,7 +138,7 @@ export default async function ChannelPage({ params, searchParams }: Props) {
           ) : (
             <EmptyState title={isSelf ? "You haven't published anything yet" : "This channel has no videos yet"}>
               {isSelf && (
-                <Link href="/studio/upload" className="text-accent hover:underline">
+                <Link href="/studio/upload" className="text-link hover:underline">
                   Publish your first video
                 </Link>
               )}
@@ -157,7 +157,7 @@ export default async function ChannelPage({ params, searchParams }: Props) {
                       {p.count} videos
                     </span>
                   </div>
-                  <p className="mt-2 font-semibold group-hover:underline">{p.title}</p>
+                  <p className="mt-2 font-medium group-hover:underline">{p.title}</p>
                   {p.visibility === "private" && <p className="text-xs text-muted">Private</p>}
                 </Link>
               ))}
@@ -178,7 +178,7 @@ export default async function ChannelPage({ params, searchParams }: Props) {
                 <>
                   <dt className="text-muted">GitHub</dt>
                   <dd>
-                    <a href={user.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent hover:underline">
+                    <a href={user.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-link hover:underline">
                       {user.githubUrl.replace("https://", "")}
                       <ExternalLink className="size-3.5" aria-hidden="true" />
                     </a>

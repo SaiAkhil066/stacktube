@@ -34,7 +34,7 @@ export function SubscribeButton({
       }}
       aria-pressed={optimistic}
       className={cn(
-        "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors",
+        "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors",
         optimistic ? "bg-surface-2 hover:bg-line" : "bg-fg text-bg hover:opacity-85",
       )}
     >

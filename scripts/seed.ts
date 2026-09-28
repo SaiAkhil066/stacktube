@@ -1,9 +1,9 @@
-// Seeds DATABASE_URL with demo channels and videos (only if it has no videos).
+// Adds any missing demo channels and videos to DATABASE_URL. Safe to re-run.
 import { config } from "dotenv";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "../src/db/schema";
-import { seedIfEmpty } from "../src/db/seed";
+import { seed } from "../src/db/seed";
 
 config({ path: [".env.local", ".env"] });
 
@@ -12,9 +12,9 @@ async function main() {
   const url = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
   if (!url) throw new Error("Set DATABASE_URL first. Local PGlite seeds itself on startup.");
   const client = postgres(url, { max: 1 });
-  await seedIfEmpty(drizzle(client, { schema }));
+  const { added } = await seed(drizzle(client, { schema }));
   await client.end();
-  console.log("seed: done");
+  console.log(`seed: done, ${added} videos added`);
 }
 
 main().catch((err) => {

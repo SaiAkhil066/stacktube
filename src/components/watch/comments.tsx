@@ -25,7 +25,7 @@ function Comment({ c, ctx, isReply }: { c: CommentData; ctx: Ctx; isReply?: bool
         <p className="flex flex-wrap items-center gap-x-2 text-[13px]">
           <Link
             href={`/@${c.author.handle}`}
-            className={cn("font-semibold", isOwner && "rounded-full bg-surface-2 px-2 py-0.5")}
+            className={cn("font-medium", isOwner && "rounded-full bg-surface-2 px-2 py-0.5")}
           >
             @{c.author.handle}
           </Link>
@@ -81,7 +81,7 @@ export function Comments({
               href={sortLink(s)}
               scroll={false}
               aria-current={sort === s ? "true" : undefined}
-              className={cn("rounded-full px-3 py-1", sort === s ? "bg-surface-2 font-semibold" : "text-muted hover:text-fg")}
+              className={cn("rounded-full px-3 py-1", sort === s ? "bg-surface-2 font-medium" : "text-muted hover:text-fg")}
             >
               {s === "top" ? "Top" : "Newest"}
             </Link>

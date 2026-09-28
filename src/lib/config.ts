@@ -3,6 +3,18 @@ export const APP_NAME = "StackTube";
 export const APP_TAGLINE = "Video for people who ship code";
 export const GITHUB_REPO = "https://github.com/SaiAkhil066/stacktube";
 
+// What kind of video it is. Shown as the first chips on the home page.
+export const CATEGORIES = [
+  { slug: "comedy", label: "Funny" },
+  { slug: "tutorial", label: "Tutorials" },
+  { slug: "talk", label: "Talks" },
+] as const;
+export type CategorySlug = (typeof CATEGORIES)[number]["slug"];
+
+export function categoryBySlug(slug: string | null | undefined) {
+  return CATEGORIES.find((c) => c.slug === slug);
+}
+
 export const LEVELS = ["beginner", "intermediate", "advanced"] as const;
 export type Level = (typeof LEVELS)[number];
 

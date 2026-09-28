@@ -26,7 +26,7 @@ export default async function StudioPage() {
       <PageHeader title="Studio">
         <Link
           href="/studio/upload"
-          className="flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-fg hover:bg-accent-hover"
+          className="flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-fg hover:bg-accent-hover"
         >
           <Plus className="size-4" />
           Publish a video
@@ -60,7 +60,7 @@ export default async function StudioPage() {
                 <Image src={thumbnailUrl(v.youtubeId, "mq")} alt="" fill sizes="160px" className="object-cover" />
               </Link>
               <div className="min-w-0 flex-1">
-                <Link href={`/watch?v=${v.id}`} className="line-clamp-2 font-semibold hover:underline">
+                <Link href={`/watch?v=${v.id}`} className="line-clamp-2 font-medium hover:underline">
                   {v.title}
                 </Link>
                 <p className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">

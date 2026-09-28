@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Schibsted_Grotesk } from "next/font/google";
+import { JetBrains_Mono, Roboto } from "next/font/google";
 import { cookies } from "next/headers";
 import { Shell } from "@/components/shell";
 import { APP_NAME, APP_TAGLINE } from "@/lib/config";
@@ -7,7 +7,7 @@ import { getSubscribedChannels, getUnreadCount } from "@/lib/queries";
 import { getViewer } from "@/lib/session";
 import "./globals.css";
 
-const ui = Schibsted_Grotesk({ variable: "--font-ui", subsets: ["latin"] });
+const ui = Roboto({ variable: "--font-ui", subsets: ["latin"], weight: ["400", "500", "700"] });
 const code = JetBrains_Mono({ variable: "--font-code", subsets: ["latin"] });
 
 export const metadata: Metadata = {

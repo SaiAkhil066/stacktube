@@ -4,42 +4,46 @@
 
 :root,
 [data-theme="dark"] {
-  --bg: #0f1222;
-  --surface: #171b2e;
-  --surface-2: #1f2440;
-  --line: #2a3050;
-  --fg: #e7e9f5;
-  --muted: #8a90b2;
-  --accent: #5b6cff;
-  --accent-hover: #7482ff;
+  --bg: #0f0f0f;
+  --surface: #1f1f1f;
+  --surface-2: #272727;
+  --line: #3a3a3a;
+  --fg: #f1f1f1;
+  --muted: #aaaaaa;
+  --accent: #ff0033;
+  --accent-hover: #d9002b;
   --accent-fg: #ffffff;
+  --link: #3ea6ff;
+  --link-hover: #65b8ff;
   --kw: #c792ea;
   --str: #7fdbca;
   --fn: #ffcb6b;
   --num: #f78c6c;
-  --danger: #ff6b81;
-  --code-bg: #0b0e1b;
-  --overlay: rgb(8 10 20 / 0.72);
+  --danger: #ff4e45;
+  --code-bg: #141414;
+  --overlay: rgb(0 0 0 / 0.7);
   color-scheme: dark;
 }
 
 [data-theme="light"] {
-  --bg: #f6f7fb;
+  --bg: #ffffff;
   --surface: #ffffff;
-  --surface-2: #eceef6;
-  --line: #dde0ec;
-  --fg: #14172b;
-  --muted: #5e6488;
-  --accent: #4453f0;
-  --accent-hover: #3342d8;
+  --surface-2: #f2f2f2;
+  --line: #e5e5e5;
+  --fg: #0f0f0f;
+  --muted: #606060;
+  --accent: #ff0033;
+  --accent-hover: #d9002b;
   --accent-fg: #ffffff;
+  --link: #065fd4;
+  --link-hover: #0b57d0;
   --kw: #8a45c4;
   --str: #127f6d;
   --fn: #a0700a;
   --num: #c4541f;
-  --danger: #d93a57;
-  --code-bg: #f1f2f8;
-  --overlay: rgb(20 23 43 / 0.5);
+  --danger: #cc0000;
+  --code-bg: #f7f7f7;
+  --overlay: rgb(0 0 0 / 0.5);
   color-scheme: light;
 }
 
@@ -53,6 +57,8 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-fg: var(--accent-fg);
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
   --color-kw: var(--kw);
   --color-str: var(--str);
   --color-fn: var(--fn);
@@ -70,15 +76,14 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-ui), system-ui, sans-serif;
-  font-feature-settings: "ss01";
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 35%, transparent);
+  background: color-mix(in srgb, var(--link) 35%, transparent);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--link);
   outline-offset: 2px;
   border-radius: 6px;
 }
@@ -113,7 +118,7 @@ body {
   margin-top: 0.6em;
 }
 .prose-dev a {
-  color: var(--accent);
+  color: var(--link);
 }
 .prose-dev a:hover {
   text-decoration: underline;
@@ -183,7 +188,7 @@ body {
 .hljs-attribute,
 .hljs-property,
 .hljs-tag {
-  color: var(--accent);
+  color: var(--link);
 }
 .hljs-meta {
   color: var(--muted);

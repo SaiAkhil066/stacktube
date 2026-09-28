@@ -57,8 +57,8 @@ export default async function PlaylistPage({ searchParams }: Props) {
         <div className="relative aspect-video overflow-hidden rounded-xl bg-surface-2">
           {cover && <Image src={thumbnailUrl(cover.youtubeId)} alt="" fill sizes="352px" className="object-cover" />}
         </div>
-        <h1 className="mt-4 text-2xl font-extrabold tracking-[-0.02em]">{data.title}</h1>
-        <Link href={`/@${data.owner.handle}`} className="mt-3 flex w-fit items-center gap-2 text-sm font-semibold">
+        <h1 className="mt-4 text-2xl font-bold tracking-[-0.02em]">{data.title}</h1>
+        <Link href={`/@${data.owner.handle}`} className="mt-3 flex w-fit items-center gap-2 text-sm font-medium">
           <Avatar name={data.owner.name} image={data.owner.image} size={24} />
           {data.owner.name}
         </Link>
@@ -70,7 +70,7 @@ export default async function PlaylistPage({ searchParams }: Props) {
           {cover && (
             <Link
               href={`/watch?v=${cover.id}`}
-              className="flex flex-1 items-center justify-center gap-2 rounded-full bg-fg px-4 py-2 text-sm font-semibold text-bg hover:opacity-85"
+              className="flex flex-1 items-center justify-center gap-2 rounded-full bg-fg px-4 py-2 text-sm font-medium text-bg hover:opacity-85"
             >
               <Play className="size-4 fill-current" aria-hidden="true" />
               Play all

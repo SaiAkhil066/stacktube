@@ -8,11 +8,13 @@
 
 StackTube is a learning project. Videos stream from YouTube (so hosting is free), and everything around them is built here: channels, subscriptions, comments, playlists, history, search, a studio for publishing, and a few features made for programmers.
 
+It isn't only tutorials: the feed mixes tech comedy (sketches, "interview with a senior developer" parodies, Shorts) with tutorials and conference talks.
+
 ## What's different from YouTube
 
 - **Code panel synced to the video.** Creators attach snippets at timestamps. While you watch, the current snippet is highlighted like the active line in an editor, and one click copies it.
 - **Comments speak Markdown.** Fenced code blocks are syntax-highlighted, and timestamps like `1:23` jump the player.
-- **Browse by stack and level.** Filter by language or tool (Rust, React, Docker...) and by beginner, intermediate or advanced.
+- **Browse by kind and stack.** Chips for Funny, Tutorials and Talks, plus languages and tools (Rust, React, Docker...). Search also filters tutorials by level.
 - **Source code link** on every video that has a repository.
 - **Chapters** from `0:00 Title` lines in the description, shown as a segmented timeline under the player.
 - **Press `/`** anywhere to search.
@@ -105,4 +107,6 @@ To rename the app, change `APP_NAME` in `src/lib/config.ts`.
 
 ## Credits
 
-Demo videos are public YouTube uploads by Fireship, freeCodeCamp.org and Programming with Mosh, embedded with credit to their creators. The demo channels that list them are fictional.
+Demo videos are public YouTube uploads embedded with credit to their creators, including Fireship, freeCodeCamp.org, Programming with Mosh, KRAZAM, Kai Lentit, Joma Tech, Lauris Beinerts, Josh Weinberg and NDC Conferences. The demo channels that list them are fictional.
+
+To add demo videos that are new since you last ran the app, run `pnpm db:seed` (hosted database) or just restart `pnpm dev` (local). Seeding only adds what's missing.

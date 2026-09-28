@@ -13,7 +13,7 @@ function Shelf({ title, href, videos }: { title: string; href: string; videos: A
     <section className="mb-10">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-bold">{title}</h2>
-        <Link href={href} className="rounded-full border border-line px-3.5 py-1.5 text-sm font-semibold hover:bg-surface-2">
+        <Link href={href} className="rounded-full border border-line px-3.5 py-1.5 text-sm font-medium hover:bg-surface-2">
           View all
         </Link>
       </div>
@@ -35,7 +35,7 @@ export default async function YouPage() {
       <div className="mb-10 flex items-center gap-4">
         <Avatar name={viewer.name} image={viewer.image} size={96} />
         <div>
-          <h1 className="text-3xl font-extrabold tracking-[-0.02em]">{viewer.name}</h1>
+          <h1 className="text-3xl font-bold tracking-[-0.02em]">{viewer.name}</h1>
           <Link href={`/@${viewer.handle}`} className="text-sm text-muted hover:text-fg">
             @{viewer.handle}, view channel
           </Link>
@@ -44,7 +44,7 @@ export default async function YouPage() {
       <Shelf title="History" href="/feed/history" videos={history} />
       <Shelf title="Watch later" href="/playlist?list=WL" videos={later} />
       <Shelf title="Liked videos" href="/playlist?list=LL" videos={liked} />
-      <Link href="/feed/playlists" className="text-accent hover:underline">
+      <Link href="/feed/playlists" className="text-link hover:underline">
         See all your playlists
       </Link>
     </div>

@@ -2,17 +2,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { Code2 } from "lucide-react";
 import { Avatar } from "@/components/avatar";
-import { TopicTag } from "@/components/topic-tag";
+import { LogoMark } from "@/components/logo";
 import type { VideoCardData } from "@/lib/queries";
 import { cn, formatDuration, formatViews, timeAgo } from "@/lib/format";
 import { thumbnailUrl } from "@/lib/youtube";
 
-export function Thumbnail({ video, className, sizes }: { video: VideoCardData; className?: string; sizes: string }) {
+export function Thumbnail({
+  video,
+  className,
+  sizes,
+  bleed,
+}: {
+  video: VideoCardData;
+  className?: string;
+  sizes: string;
+  // Edge-to-edge with square corners on phones, like the YouTube app.
+  bleed?: boolean;
+}) {
   const duration = formatDuration(video.durationSeconds);
   const progress =
     video.progressSeconds && video.durationSeconds ? Math.min(100, (video.progressSeconds / video.durationSeconds) * 100) : 0;
   return (
-    <div className={cn("relative aspect-video overflow-hidden rounded-xl bg-surface-2", className)}>
+    <div className={cn("relative aspect-video overflow-hidden bg-surface-2", bleed ? "sm:rounded-xl" : "rounded-xl", className)}>
       <Image
         src={thumbnailUrl(video.youtubeId)}
         alt=""
@@ -21,15 +32,16 @@ export function Thumbnail({ video, className, sizes }: { video: VideoCardData; c
         className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
       />
       {video.snippetCount > 0 && (
-        <span className="absolute top-2 left-2 flex items-center gap-1 rounded-md bg-black/75 px-1.5 py-0.5 text-[11px] font-semibold text-[#7fdbca]">
+        <span
+          className="absolute bottom-2 left-2 flex items-center gap-1 rounded bg-black/80 px-1 py-0.5 text-xs font-medium text-white"
+          title={`${video.snippetCount} code ${video.snippetCount === 1 ? "snippet" : "snippets"} synced to the video`}
+        >
           <Code2 className="size-3.5" aria-hidden="true" />
-          {video.snippetCount} {video.snippetCount === 1 ? "snippet" : "snippets"}
+          Code
         </span>
       )}
       {duration && (
-        <span className="absolute right-2 bottom-2 rounded-md bg-black/80 px-1.5 py-0.5 font-mono text-[11px] font-medium text-white">
-          {duration}
-        </span>
+        <span className="absolute right-2 bottom-2 rounded bg-black/80 px-1 py-0.5 text-xs font-medium text-white">{duration}</span>
       )}
       {progress > 0 && (
         <span className="absolute inset-x-0 bottom-0 h-1 bg-white/30">
@@ -42,8 +54,8 @@ export function Thumbnail({ video, className, sizes }: { video: VideoCardData; c
 
 function Meta({ video, className }: { video: VideoCardData; className?: string }) {
   return (
-    <p className={cn("text-[13px] text-muted", className)}>
-      {formatViews(video.views)}, {timeAgo(video.createdAt)}
+    <p className={cn("text-sm text-muted", className)}>
+      {formatViews(video.views)} <span aria-hidden="true">•</span> {timeAgo(video.createdAt)}
     </p>
   );
 }
@@ -51,8 +63,8 @@ function Meta({ video, className }: { video: VideoCardData; className?: string }
 export function VideoCard({ video }: { video: VideoCardData }) {
   return (
     <article className="group flex flex-col gap-3">
-      <Link href={`/watch?v=${video.id}`} className="rounded-xl" aria-label={video.title}>
-        <Thumbnail video={video} sizes="(min-width: 1536px) 22vw, (min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" />
+      <Link href={`/watch?v=${video.id}`} className="-mx-4 sm:mx-0 sm:rounded-xl" aria-label={video.title}>
+        <Thumbnail bleed video={video} sizes="(min-width: 1536px) 22vw, (min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" />
       </Link>
       <div className="flex gap-3">
         <Link href={`/@${video.owner.handle}`} className="mt-0.5 h-fit rounded-full">
@@ -60,19 +72,15 @@ export function VideoCard({ video }: { video: VideoCardData }) {
           <span className="sr-only">{video.owner.name}</span>
         </Link>
         <div className="min-w-0 flex-1">
-          <h3 className="line-clamp-2 leading-snug font-semibold">
+          <h3 className="line-clamp-2 leading-snug font-medium">
             <Link href={`/watch?v=${video.id}`}>{video.title}</Link>
           </h3>
-          <p className="mt-1 text-[13px] text-muted">
+          <p className="mt-1 text-sm text-muted">
             <Link href={`/@${video.owner.handle}`} className="hover:text-fg">
               {video.owner.name}
             </Link>
           </p>
           <Meta video={video} />
-          <div className="mt-1.5 flex items-center gap-3 text-xs text-muted">
-            <TopicTag slug={video.topic} />
-            <span className="capitalize">{video.level}</span>
-          </div>
         </div>
       </div>
     </article>
@@ -96,20 +104,16 @@ export function VideoRow({
         <Thumbnail video={video} sizes={size === "lg" ? "360px" : "256px"} className={size === "sm" ? "rounded-lg" : undefined} />
       </Link>
       <div className="min-w-0 flex-1">
-        <h3 className={cn("line-clamp-2 leading-snug font-semibold", size === "sm" ? "text-sm" : size === "lg" && "text-lg")}>
+        <h3 className={cn("line-clamp-2 leading-snug font-medium", size === "sm" ? "text-sm" : size === "lg" && "text-lg")}>
           <Link href={`/watch?v=${video.id}`}>{video.title}</Link>
         </h3>
         {size === "lg" ? (
           <>
-            <Meta video={video} className="mt-1" />
-            <Link href={`/@${video.owner.handle}`} className="my-2.5 flex w-fit items-center gap-2 text-[13px] text-muted hover:text-fg">
+            <Meta video={video} className="mt-1 text-xs" />
+            <Link href={`/@${video.owner.handle}`} className="my-2.5 flex w-fit items-center gap-2 text-xs text-muted hover:text-fg">
               <Avatar name={video.owner.name} image={video.owner.image} size={24} />
               {video.owner.name}
             </Link>
-            <div className="flex items-center gap-3 text-xs text-muted">
-              <TopicTag slug={video.topic} />
-              <span className="capitalize">{video.level}</span>
-            </div>
           </>
         ) : (
           <>
@@ -119,7 +123,7 @@ export function VideoRow({
               </Link>
             </p>
             <p className="text-xs text-muted">
-              {formatViews(video.views)}, {timeAgo(video.createdAt)}
+              {formatViews(video.views)} <span aria-hidden="true">•</span> {timeAgo(video.createdAt)}
             </p>
           </>
         )}
@@ -142,12 +146,8 @@ export function VideoGrid({ videos }: { videos: VideoCardData[] }) {
 export function EmptyState({ title, children }: { title: string; children?: React.ReactNode }) {
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-3 py-20 text-center">
-      <svg viewBox="0 0 64 20" width="64" height="20" aria-hidden="true">
-        <rect x="0" y="0" width="30" height="5" rx="2.5" fill="var(--kw)" />
-        <rect x="0" y="7.5" width="46" height="5" rx="2.5" fill="var(--str)" />
-        <rect x="0" y="15" width="22" height="5" rx="2.5" fill="var(--fn)" />
-      </svg>
-      <h2 className="text-lg font-semibold">{title}</h2>
+      <LogoMark size={40} className="opacity-90" />
+      <h2 className="text-lg font-medium">{title}</h2>
       {children && <div className="text-sm text-muted">{children}</div>}
     </div>
   );

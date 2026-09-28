@@ -31,7 +31,7 @@ export default async function HistoryPage() {
       <PageHeader title="Watch history">
         {rows.length > 0 && (
           <form action={clearHistory}>
-            <button className="rounded-full bg-surface-2 px-4 py-2 text-sm font-semibold hover:bg-line">Clear all history</button>
+            <button className="rounded-full bg-surface-2 px-4 py-2 text-sm font-medium hover:bg-line">Clear all history</button>
           </form>
         )}
       </PageHeader>

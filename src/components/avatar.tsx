@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { cn } from "@/lib/format";
 
-const TINTS = ["var(--kw)", "var(--str)", "var(--fn)", "var(--accent)"];
+// Default avatar colours for channels without a photo.
+const TINTS = ["#ef6c00", "#7b1fa2", "#0288d1", "#388e3c", "#c2185b", "#5d4037", "#00897b", "#3949ab"];
 
 export function Avatar({
   name,
@@ -29,7 +30,7 @@ export function Avatar({
   return (
     <span
       aria-hidden="true"
-      className={cn("grid shrink-0 place-items-center rounded-full font-bold text-bg", className)}
+      className={cn("grid shrink-0 place-items-center rounded-full font-medium text-white", className)}
       style={{ width: size, height: size, background: tint, fontSize: size * 0.42 }}
     >
       {name.trim().charAt(0).toUpperCase() || "?"}

@@ -82,13 +82,13 @@ export function CommentComposer({
                 setFocused(false);
                 onDone?.();
               }}
-              className="rounded-full px-3.5 py-1.5 text-sm font-semibold hover:bg-surface-2"
+              className="rounded-full px-3.5 py-1.5 text-sm font-medium hover:bg-surface-2"
             >
               Cancel
             </button>
             <button
               disabled={pending || !body.trim()}
-              className="rounded-full bg-accent px-3.5 py-1.5 text-sm font-semibold text-accent-fg hover:bg-accent-hover disabled:opacity-40"
+              className="rounded-full bg-link px-3.5 py-1.5 text-sm font-medium text-white hover:bg-link-hover disabled:opacity-40"
             >
               {reply ? "Reply" : "Comment"}
             </button>
@@ -142,7 +142,7 @@ export function CommentControls({
           <ThumbsUp className={cn("size-4", liked && "fill-current")} />
         </button>
         {count > 0 && <span className="mr-2 text-muted">{formatCount(count)}</span>}
-        <button onClick={() => (viewer ? setReplying(true) : router.push("/signin"))} className="rounded-full px-3 py-1.5 font-semibold hover:bg-surface-2">
+        <button onClick={() => (viewer ? setReplying(true) : router.push("/signin"))} className="rounded-full px-3 py-1.5 font-medium hover:bg-surface-2">
           Reply
         </button>
         {canPin && (
@@ -182,7 +182,7 @@ export function RepliesToggle({ count, children }: { count: number; children: Re
       <button
         onClick={() => setOpen(!open)}
         aria-expanded={open}
-        className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold text-accent hover:bg-accent/10"
+        className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium text-link hover:bg-link/10"
       >
         {open ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
         {count} {count === 1 ? "reply" : "replies"}

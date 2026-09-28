@@ -9,7 +9,7 @@ import { cn, formatCount, formatDuration } from "@/lib/format";
 
 type PlaylistOption = { id: string; title: string; visibility: string; hasVideo: boolean };
 
-const pill = "flex items-center gap-2 rounded-full bg-surface-2 px-3.5 py-2 text-sm font-semibold hover:bg-line";
+const pill = "flex items-center gap-2 rounded-full bg-surface-2 px-3.5 py-2 text-sm font-medium hover:bg-line";
 
 export function VideoActions({
   videoId,
@@ -50,12 +50,12 @@ export function VideoActions({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 scrollbar-none sm:mx-0 sm:flex-wrap sm:px-0 [&>*]:shrink-0">
       <div className="flex overflow-hidden rounded-full bg-surface-2">
         <button
           onClick={() => react(1)}
           aria-pressed={reaction === 1}
-          className="flex items-center gap-2 py-2 pr-3 pl-3.5 text-sm font-semibold hover:bg-line"
+          className="flex items-center gap-2 py-2 pr-3 pl-3.5 text-sm font-medium hover:bg-line"
           aria-label={`Like, ${shownLikes} likes`}
         >
           <ThumbsUp className={cn("size-[18px]", reaction === 1 && "fill-current")} />
@@ -123,7 +123,7 @@ function Dialog({ title, onClose, children }: { title: string; onClose: () => vo
       className="m-auto w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-line bg-surface p-0 text-fg shadow-2xl backdrop:bg-[var(--overlay)]"
     >
       <div className="flex items-center justify-between px-5 pt-4 pb-2">
-        <h2 className="font-semibold">{title}</h2>
+        <h2 className="font-medium">{title}</h2>
         <button onClick={() => ref.current?.close()} className="rounded-full p-1.5 hover:bg-surface-2" aria-label="Close">
           <X className="size-5" />
         </button>
@@ -150,7 +150,7 @@ function ShareDialog({ videoId, onClose }: { videoId: string; onClose: () => voi
             await navigator.clipboard.writeText(url);
             setCopied(true);
           }}
-          className="rounded-md bg-accent px-3 py-1.5 text-sm font-semibold text-accent-fg hover:bg-accent-hover"
+          className="rounded-md bg-link px-3 py-1.5 text-sm font-medium text-white hover:bg-link-hover"
         >
           {copied ? "Copied" : "Copy"}
         </button>
@@ -164,7 +164,7 @@ function ShareDialog({ videoId, onClose }: { videoId: string; onClose: () => voi
               setAtTime(e.target.checked);
               setCopied(false);
             }}
-            className="accent-[var(--accent)]"
+            className="accent-[var(--link)]"
           />
           Start at {formatDuration(startAt)}
         </label>
@@ -192,7 +192,7 @@ function SaveDialog({ videoId, playlists, onClose }: { videoId: string; playlist
               <input
                 type="checkbox"
                 checked={p.hasVideo}
-                className="size-4 accent-[var(--accent)]"
+                className="size-4 accent-[var(--link)]"
                 onChange={() => {
                   setItems((all) => all.map((x) => (x.id === p.id ? { ...x, hasVideo: !x.hasVideo } : x)));
                   startTransition(async () => {
@@ -229,7 +229,7 @@ function SaveDialog({ videoId, playlists, onClose }: { videoId: string; playlist
               value={name}
               onChange={(e) => setName(e.target.value)}
               maxLength={150}
-              className="w-full rounded-lg border border-line bg-bg px-3 py-2 outline-none focus:border-accent"
+              className="w-full rounded-lg border border-line bg-bg px-3 py-2 outline-none focus:border-link"
             />
           </label>
           <label className="block text-sm">
@@ -245,19 +245,19 @@ function SaveDialog({ videoId, playlists, onClose }: { videoId: string; playlist
           </label>
           {error && <p className="text-sm text-danger">{error}</p>}
           <div className="flex justify-end gap-2">
-            <button type="button" onClick={() => setCreating(false)} className="rounded-full px-4 py-2 text-sm font-semibold hover:bg-surface-2">
+            <button type="button" onClick={() => setCreating(false)} className="rounded-full px-4 py-2 text-sm font-medium hover:bg-surface-2">
               Cancel
             </button>
             <button
               disabled={pending || !name.trim()}
-              className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-fg hover:bg-accent-hover disabled:opacity-50"
+              className="rounded-full bg-link px-4 py-2 text-sm font-medium text-white hover:bg-link-hover disabled:opacity-50"
             >
               Create
             </button>
           </div>
         </form>
       ) : (
-        <button onClick={() => setCreating(true)} className="mt-3 flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold hover:bg-surface-2">
+        <button onClick={() => setCreating(true)} className="mt-3 flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium hover:bg-surface-2">
           <Plus className="size-5" />
           New playlist
         </button>

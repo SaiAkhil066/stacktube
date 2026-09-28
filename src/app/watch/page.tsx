@@ -13,6 +13,7 @@ import { Comments } from "@/components/watch/comments";
 import { DescriptionBox } from "@/components/watch/description";
 import { PlayerFrame, PlayerProvider, SeekLinks } from "@/components/watch/player";
 import { VideoActions } from "@/components/watch/video-actions";
+import { categoryBySlug } from "@/lib/config";
 import { formatCount, parseChapters, timeAgo } from "@/lib/format";
 import { highlight } from "@/lib/highlight";
 import { getComments, getPlaylists, getSnippets, getVideo, listUpNext } from "@/lib/queries";
@@ -71,7 +72,10 @@ export default async function WatchPage({ searchParams }: Props) {
     >
       <div className="mx-auto flex max-w-[110rem] flex-col gap-6 pb-16 sm:px-6 sm:pt-6 lg:flex-row">
         <div className="min-w-0 flex-1">
-          <PlayerFrame />
+          {/* Pinned under the top bar on phones while scrolling comments, like the app. */}
+          <div className="sticky top-14 z-20 bg-black lg:static lg:bg-transparent">
+            <PlayerFrame />
+          </div>
           <ChapterStrip chapters={chapters} />
 
           <div className="px-4 sm:px-0">
@@ -83,7 +87,7 @@ export default async function WatchPage({ searchParams }: Props) {
                   <Avatar name={owner.name} image={owner.image} size={40} />
                 </Link>
                 <div className="mr-3 min-w-0">
-                  <Link href={`/@${owner.handle}`} className="block truncate font-semibold">
+                  <Link href={`/@${owner.handle}`} className="block truncate font-medium">
                     {owner.name}
                   </Link>
                   <p className="text-xs text-muted">{formatCount(data.subscribers)} subscribers</p>
@@ -111,7 +115,9 @@ export default async function WatchPage({ searchParams }: Props) {
                     <span className="font-normal text-muted">
                       <TopicTag slug={video.topic} />
                     </span>
-                    <span className="font-normal text-muted capitalize">{video.level}</span>
+                    <span className="font-normal text-muted capitalize">
+                      {video.category === "tutorial" ? video.level : (categoryBySlug(video.category)?.label ?? video.category)}
+                    </span>
                     {video.visibility !== "public" && (
                       <span className="flex items-center gap-1 font-normal text-muted capitalize">
                         <Lock className="size-3.5" aria-hidden="true" />
@@ -127,7 +133,7 @@ export default async function WatchPage({ searchParams }: Props) {
                 {video.tags.length > 0 && (
                   <p className="mt-3 flex flex-wrap gap-2">
                     {video.tags.map((tag) => (
-                      <Link key={tag} href={`/results?q=${encodeURIComponent(tag)}`} className="text-accent hover:underline">
+                      <Link key={tag} href={`/results?q=${encodeURIComponent(tag)}`} className="text-link hover:underline">
                         #{tag}
                       </Link>
                     ))}
@@ -166,7 +172,7 @@ export default async function WatchPage({ searchParams }: Props) {
               <CodePanel snippets={panelSnippets} />
             </div>
           )}
-          <h2 className="mb-3 text-base font-semibold">Up next</h2>
+          <h2 className="mb-3 text-base font-medium">Up next</h2>
           <div className="space-y-3">
             {upNext.map((v) => (
               <VideoRow key={v.id} video={v} size="sm" />

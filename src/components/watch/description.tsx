@@ -11,14 +11,14 @@ export function DescriptionBox({ meta, children }: { meta: React.ReactNode; chil
       className={cn("rounded-xl bg-surface-2 p-3 text-sm", !open && "cursor-pointer hover:bg-line/70")}
       onClick={() => !open && setOpen(true)}
     >
-      <p className="font-semibold">{meta}</p>
+      <p className="font-medium">{meta}</p>
       <div className={cn("relative mt-1", !open && "max-h-[4.8rem] overflow-hidden")}>{children}</div>
       <button
         onClick={(e) => {
           e.stopPropagation();
           setOpen(!open);
         }}
-        className="mt-1 font-semibold"
+        className="mt-1 font-medium"
         aria-expanded={open}
       >
         {open ? "Show less" : "...more"}

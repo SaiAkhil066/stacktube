@@ -50,7 +50,7 @@ export default async function ResultsPage({ searchParams }: Props) {
               key={l ?? "any"}
               href={href({ level: l })}
               aria-current={level === l ? "true" : undefined}
-              className={level === l ? "rounded-full bg-surface-2 px-3 py-1 font-semibold capitalize" : "rounded-full px-3 py-1 text-muted capitalize hover:text-fg"}
+              className={level === l ? "rounded-full bg-surface-2 px-3 py-1 font-medium capitalize" : "rounded-full px-3 py-1 text-muted capitalize hover:text-fg"}
             >
               {l ?? "Any level"}
             </Link>
@@ -61,7 +61,7 @@ export default async function ResultsPage({ searchParams }: Props) {
               key={s}
               href={href({ sort: s === "latest" ? undefined : s })}
               aria-current={sort === s ? "true" : undefined}
-              className={sort === s ? "rounded-full bg-surface-2 px-3 py-1 font-semibold" : "rounded-full px-3 py-1 text-muted hover:text-fg"}
+              className={sort === s ? "rounded-full bg-surface-2 px-3 py-1 font-medium" : "rounded-full px-3 py-1 text-muted hover:text-fg"}
             >
               {s === "latest" ? "Newest" : "Most viewed"}
             </Link>
@@ -75,7 +75,7 @@ export default async function ResultsPage({ searchParams }: Props) {
             <Link key={c.id} href={`/@${c.handle}`} className="flex items-center gap-4 rounded-xl p-2 hover:bg-surface">
               <Avatar name={c.name} image={c.image} size={72} />
               <div className="min-w-0">
-                <p className="text-lg font-semibold">{c.name}</p>
+                <p className="text-lg font-medium">{c.name}</p>
                 <p className="text-sm text-muted">
                   @{c.handle}, {formatCount(c.subscribers)} subscribers
                 </p>

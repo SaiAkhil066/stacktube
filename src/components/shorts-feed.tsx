@@ -33,7 +33,7 @@ export function ShortsFeed({ shorts }: { shorts: Short[] }) {
   }, [shorts.length]);
 
   return (
-    <div className="h-[calc(100dvh-3.5rem)] snap-y snap-mandatory overflow-y-auto scrollbar-none">
+    <div className="h-[calc(100dvh-7rem)] snap-y snap-mandatory overflow-y-auto scrollbar-none sm:h-[calc(100dvh-3.5rem)]">
       {shorts.map((s, i) => (
         <section
           key={s.id}
@@ -42,9 +42,9 @@ export function ShortsFeed({ shorts }: { shorts: Short[] }) {
           }}
           data-index={i}
           aria-label={s.title}
-          className="flex h-full snap-start items-center justify-center gap-4 py-4"
+          className="relative flex h-full snap-start items-center justify-center sm:gap-4 sm:py-4"
         >
-          <div className="relative aspect-[9/16] h-full max-h-[52rem] overflow-hidden rounded-2xl bg-black">
+          <div className="relative h-full w-full overflow-hidden bg-black sm:aspect-[9/16] sm:max-h-[52rem] sm:w-auto sm:rounded-2xl">
             {i === active ? (
               <iframe
                 src={`https://www.youtube-nocookie.com/embed/${s.youtubeId}?autoplay=1&loop=1&playlist=${s.youtubeId}&playsinline=1&rel=0`}
@@ -56,8 +56,8 @@ export function ShortsFeed({ shorts }: { shorts: Short[] }) {
             ) : (
               <Image src={thumbnailUrl(s.youtubeId)} alt="" fill sizes="400px" className="object-cover opacity-60" />
             )}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4 pt-16 text-white">
-              <Link href={`/@${s.owner.handle}`} className="pointer-events-auto flex w-fit items-center gap-2 text-sm font-semibold">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4 pt-16 pr-20 text-white sm:pr-4">
+              <Link href={`/@${s.owner.handle}`} className="pointer-events-auto flex w-fit items-center gap-2 text-sm font-medium">
                 <Avatar name={s.owner.name} image={s.owner.image} size={28} />@{s.owner.handle}
               </Link>
               <p className="mt-2 line-clamp-2 text-sm">{s.title}</p>
@@ -66,10 +66,10 @@ export function ShortsFeed({ shorts }: { shorts: Short[] }) {
           </div>
           <Link
             href={`/watch?v=${s.id}#comments`}
-            className="flex flex-col items-center gap-1 self-end pb-6 text-xs"
+            className="absolute right-3 bottom-6 flex flex-col items-center gap-1 text-xs text-white sm:static sm:self-end sm:pb-6 sm:text-fg"
             aria-label="Open comments"
           >
-            <span className="grid size-12 place-items-center rounded-full bg-surface-2 hover:bg-line">
+            <span className="grid size-12 place-items-center rounded-full bg-black/50 sm:bg-surface-2 sm:hover:bg-line">
               <MessageSquare className="size-5" />
             </span>
             Comments

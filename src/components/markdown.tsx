@@ -27,9 +27,9 @@ export function Markdown({ children, timestamps = false }: { children: string; t
                 {children}
               </a>
             ),
-          h1: ({ children }) => <p className="font-semibold">{children}</p>,
-          h2: ({ children }) => <p className="font-semibold">{children}</p>,
-          h3: ({ children }) => <p className="font-semibold">{children}</p>,
+          h1: ({ children }) => <p className="font-medium">{children}</p>,
+          h2: ({ children }) => <p className="font-medium">{children}</p>,
+          h3: ({ children }) => <p className="font-medium">{children}</p>,
           img: ({ alt }) => <span>{alt}</span>,
         }}
       >

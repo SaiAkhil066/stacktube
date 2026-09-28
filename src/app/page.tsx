@@ -1,54 +1,49 @@
 import Link from "next/link";
 import { ChipBar } from "@/components/chips";
+import { ShortsShelf } from "@/components/shorts-shelf";
 import { EmptyState, VideoGrid } from "@/components/video-card";
-import { LEVELS, TOPICS, topicBySlug } from "@/lib/config";
+import { CATEGORIES, TOPICS, categoryBySlug, topicBySlug } from "@/lib/config";
 import { listVideos } from "@/lib/queries";
 
 export default async function Home({ searchParams }: PageProps<"/">) {
   const sp = await searchParams;
   const topic = topicBySlug(typeof sp.topic === "string" ? sp.topic : null);
-  const level = typeof sp.level === "string" && (LEVELS as readonly string[]).includes(sp.level) ? sp.level : undefined;
-  const videos = await listVideos({ topic: topic?.slug, level, shorts: false });
+  const category = categoryBySlug(typeof sp.category === "string" ? sp.category : null);
+  const filtered = Boolean(topic || category);
 
-  const withLevel = (href: string) => (level ? `${href}${href.includes("?") ? "&" : "?"}level=${level}` : href);
+  const [videos, shorts] = await Promise.all([
+    listVideos({ topic: topic?.slug, category: category?.slug, shorts: false }),
+    // The shelf shows on the unfiltered feed and under "Funny".
+    !topic && (!category || category.slug === "comedy") ? listVideos({ shorts: true, limit: 12 }) : Promise.resolve([]),
+  ]);
+
   const chips = [
-    { href: withLevel("/"), label: "All", active: !topic },
-    ...TOPICS.map((t) => ({ href: withLevel(`/?topic=${t.slug}`), label: t.label, color: t.color, active: topic?.slug === t.slug })),
+    { href: "/", label: "All", active: !filtered },
+    ...CATEGORIES.map((c) => ({ href: `/?category=${c.slug}`, label: c.label, active: category?.slug === c.slug })),
+    ...TOPICS.map((t) => ({ href: `/?topic=${t.slug}`, label: t.label, active: topic?.slug === t.slug })),
   ];
+
+  // Like YouTube: a couple of rows, the Shorts shelf, then the rest.
+  const firstRows = videos.slice(0, 8);
+  const rest = videos.slice(8);
 
   return (
     <div className="px-4 pb-16 sm:px-6">
-      <div className="sticky top-14 z-30 -mx-4 flex items-center gap-4 bg-bg/95 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
-        <ChipBar chips={chips} className="min-w-0 flex-1" />
-        <nav aria-label="Level" className="hidden shrink-0 items-center gap-1 rounded-lg bg-surface-2 p-1 text-xs md:flex">
-          {[undefined, ...LEVELS].map((l) => {
-            const params = new URLSearchParams();
-            if (topic) params.set("topic", topic.slug);
-            if (l) params.set("level", l);
-            const href = params.size ? `/?${params}` : "/";
-            return (
-              <Link
-                key={l ?? "any"}
-                href={href}
-                aria-current={level === l ? "page" : undefined}
-                className={level === l ? "rounded-md bg-bg px-2.5 py-1 font-semibold capitalize" : "rounded-md px-2.5 py-1 text-muted capitalize hover:text-fg"}
-              >
-                {l ?? "Any level"}
-              </Link>
-            );
-          })}
-        </nav>
+      <div className="sticky top-14 z-30 -mx-4 bg-bg px-4 py-3 sm:-mx-6 sm:px-6">
+        <ChipBar chips={chips} />
       </div>
 
       {videos.length ? (
-        <div className="pt-3">
-          <VideoGrid videos={videos} />
+        <div className="space-y-10 pt-3">
+          <VideoGrid videos={firstRows} />
+          <ShortsShelf shorts={shorts} />
+          {rest.length > 0 && <VideoGrid videos={rest} />}
         </div>
       ) : (
-        <EmptyState title={topic ? `No ${topic.label} videos yet` : "No videos yet"}>
+        <EmptyState title={topic ? `No ${topic.label} videos yet` : "No videos here yet"}>
           <p>
             Be the first to publish one.{" "}
-            <Link href="/studio/upload" className="text-accent hover:underline">
+            <Link href="/studio/upload" className="text-link hover:underline">
               Add a video
             </Link>
           </p>

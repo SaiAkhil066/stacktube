@@ -7,11 +7,14 @@ import {
   Bell,
   Clock,
   Flame,
+  GraduationCap,
   History,
   Home,
+  Laugh,
   ListVideo,
   LogOut,
   Menu,
+  Mic,
   Moon,
   Plus,
   Search,
@@ -26,7 +29,6 @@ import {
 import { signOut } from "next-auth/react";
 import { Avatar } from "@/components/avatar";
 import { Logo } from "@/components/logo";
-import { TOPICS } from "@/lib/config";
 import { cn } from "@/lib/format";
 import type { Viewer } from "@/lib/session";
 
@@ -48,6 +50,8 @@ export function Shell({
   const pathname = usePathname();
   // Watching gets the full width; the sidebar becomes a drawer.
   const immersive = pathname.startsWith("/watch") || pathname.startsWith("/shorts");
+  // Phones get the YouTube-app tab bar everywhere except while watching.
+  const showTabs = !pathname.startsWith("/watch");
   const [expanded, setExpanded] = useState(true);
   const [drawer, setDrawer] = useState(false);
 
@@ -80,10 +84,11 @@ export function Shell({
             {expanded ? <SidebarFull viewer={viewer} subscriptions={subscriptions} /> : <SidebarMini viewer={viewer} />}
           </aside>
         )}
-        <main id="main" className="min-w-0 flex-1">
+        <main id="main" className={cn("min-w-0 flex-1", showTabs && "pb-16 sm:pb-0")}>
           {children}
         </main>
       </div>
+      {showTabs && <BottomTabs viewer={viewer} />}
 
       {drawer && (
         <div className="fixed inset-0 z-50">
@@ -108,7 +113,7 @@ export function Shell({
 function TopBar({ viewer, unread, theme, onMenu }: { viewer: Viewer | null; unread: number; theme: "dark" | "light"; onMenu: () => void }) {
   const [searchOpen, setSearchOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-40 flex h-14 items-center gap-2 border-b border-line/60 bg-bg/90 px-2 backdrop-blur-md sm:px-4">
+    <header className="sticky top-0 z-40 flex h-14 items-center gap-2 bg-bg px-3 sm:border-b sm:border-line/60 sm:px-4">
       {searchOpen ? (
         <div className="flex flex-1 items-center gap-2 sm:hidden">
           <button onClick={() => setSearchOpen(false)} className="rounded-full p-2 hover:bg-surface-2" aria-label="Close search">
@@ -118,7 +123,7 @@ function TopBar({ viewer, unread, theme, onMenu }: { viewer: Viewer | null; unre
         </div>
       ) : null}
       <div className={cn("flex shrink-0 items-center gap-1 sm:gap-3", searchOpen && "hidden sm:flex")}>
-        <button onClick={onMenu} className="rounded-full p-2 hover:bg-surface-2" aria-label="Menu">
+        <button onClick={onMenu} className="hidden rounded-full p-2 hover:bg-surface-2 sm:inline-flex" aria-label="Menu">
           <Menu className="size-5" />
         </button>
         <Link href="/" className="rounded-md">
@@ -136,7 +141,7 @@ function TopBar({ viewer, unread, theme, onMenu }: { viewer: Viewer | null; unre
           <>
             <Link
               href="/studio/upload"
-              className="flex items-center gap-1.5 rounded-full bg-surface-2 px-3 py-1.5 text-sm font-semibold hover:bg-line"
+              className="hidden items-center gap-1.5 rounded-full bg-surface-2 px-3 py-1.5 text-sm font-medium hover:bg-line sm:flex"
             >
               <Plus className="size-4" />
               <span className="hidden md:inline">Create</span>
@@ -156,7 +161,7 @@ function TopBar({ viewer, unread, theme, onMenu }: { viewer: Viewer | null; unre
             <ThemeToggle initial={theme} />
             <Link
               href="/signin"
-              className="flex items-center gap-2 rounded-full border border-line px-3.5 py-1.5 text-sm font-semibold text-accent hover:bg-surface-2"
+              className="flex items-center gap-2 rounded-full border border-line px-3.5 py-1.5 text-sm font-medium text-link hover:bg-surface-2"
             >
               <UserSquare className="size-4" />
               Sign in
@@ -197,7 +202,7 @@ function SearchBox({ autoFocus }: { autoFocus?: boolean }) {
         if (term) router.push(`/results?q=${encodeURIComponent(term)}`);
       }}
     >
-      <label className="flex flex-1 items-center gap-2 rounded-l-full border border-line bg-surface px-4 focus-within:border-accent">
+      <label className="flex flex-1 items-center gap-2 rounded-l-full border border-line bg-surface px-4 focus-within:border-link">
         <Search className="size-4 shrink-0 text-muted" aria-hidden="true" />
         <span className="sr-only">Search videos</span>
         <input
@@ -272,9 +277,9 @@ function AccountMenu({ viewer, theme }: { viewer: Viewer; theme: "dark" | "light
           <div className="flex gap-3 border-b border-line px-4 pt-1 pb-3">
             <Avatar name={viewer.name} image={viewer.image} size={40} />
             <div className="min-w-0">
-              <p className="truncate font-semibold">{viewer.name}</p>
+              <p className="truncate font-medium">{viewer.name}</p>
               <p className="truncate text-sm text-muted">@{viewer.handle}</p>
-              <Link href={`/@${viewer.handle}`} className="text-sm text-accent hover:underline">
+              <Link href={`/@${viewer.handle}`} className="text-sm text-link hover:underline">
                 View your channel
               </Link>
             </div>
@@ -325,7 +330,7 @@ function NavItem({
     return (
       <Link
         href={href}
-        className={cn("flex flex-col items-center gap-1 rounded-lg py-3.5 text-[10px] hover:bg-surface-2", active && "font-semibold")}
+        className={cn("flex flex-col items-center gap-1 rounded-lg py-3.5 text-[10px] hover:bg-surface-2", active && "font-medium")}
       >
         <Icon className="size-5" />
         {label}
@@ -336,7 +341,7 @@ function NavItem({
     <Link
       href={href}
       aria-current={active ? "page" : undefined}
-      className={cn("flex items-center gap-5 rounded-lg px-3 py-2 text-sm hover:bg-surface-2", active && "bg-surface-2 font-semibold")}
+      className={cn("flex items-center gap-5 rounded-lg px-3 py-2 text-sm hover:bg-surface-2", active && "bg-surface-2 font-medium")}
     >
       <Icon className="size-5 shrink-0" />
       <span className="truncate">{label}</span>
@@ -347,23 +352,19 @@ function NavItem({
 function Section({ title, children }: { title?: string; children: React.ReactNode }) {
   return (
     <div className="border-b border-line/70 px-3 py-3 last:border-0">
-      {title && <h2 className="px-3 pb-1.5 text-[15px] font-semibold">{title}</h2>}
+      {title && <h2 className="px-3 pb-1.5 text-[15px] font-medium">{title}</h2>}
       {children}
     </div>
   );
 }
 
 function SidebarFull({ viewer, subscriptions }: { viewer: Viewer | null; subscriptions: Channel[] }) {
-  const params = useSearchParams();
-  const pathname = usePathname();
-  const currentTopic = pathname === "/" ? params.get("topic") : null;
   return (
     <nav aria-label="Main">
       <Section>
         <NavItem href="/" icon={Home} label="Home" />
         <NavItem href="/shorts" icon={Smartphone} label="Shorts" />
         <NavItem href="/feed/subscriptions" icon={Tv} label="Subscriptions" />
-        <NavItem href="/feed/trending" icon={Flame} label="Trending" />
       </Section>
       {viewer ? (
         <Section title="You">
@@ -379,7 +380,7 @@ function SidebarFull({ viewer, subscriptions }: { viewer: Viewer | null; subscri
           <p className="px-3 pb-3 text-sm text-muted">Sign in to like videos, comment and subscribe.</p>
           <Link
             href="/signin"
-            className="mx-3 inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-1.5 text-sm font-semibold text-accent hover:bg-surface-2"
+            className="mx-3 inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-1.5 text-sm font-medium text-link hover:bg-surface-2"
           >
             <UserSquare className="size-4" />
             Sign in
@@ -396,23 +397,11 @@ function SidebarFull({ viewer, subscriptions }: { viewer: Viewer | null; subscri
           ))}
         </Section>
       )}
-      <Section title="Explore by stack">
-        {TOPICS.map((t) => (
-          <Link
-            key={t.slug}
-            href={`/?topic=${t.slug}`}
-            aria-current={currentTopic === t.slug ? "page" : undefined}
-            className={cn(
-              "flex items-center gap-5 rounded-lg px-3 py-2 text-sm hover:bg-surface-2",
-              currentTopic === t.slug && "bg-surface-2 font-semibold",
-            )}
-          >
-            <span className="grid size-5 place-items-center" aria-hidden="true">
-              <span className="size-2.5 rounded-full" style={{ background: t.color }} />
-            </span>
-            {t.label}
-          </Link>
-        ))}
+      <Section title="Explore">
+        <NavItem href="/feed/trending" icon={Flame} label="Trending" />
+        <NavItem href="/?category=comedy" icon={Laugh} label="Funny" />
+        <NavItem href="/?category=tutorial" icon={GraduationCap} label="Tutorials" />
+        <NavItem href="/?category=talk" icon={Mic} label="Talks" />
       </Section>
       <p className="px-6 py-4 text-xs leading-relaxed text-muted">
         A learning project. Videos play from YouTube and belong to their creators.
@@ -428,6 +417,49 @@ function SidebarMini({ viewer }: { viewer: Viewer | null }) {
       <NavItem mini href="/shorts" icon={Smartphone} label="Shorts" />
       <NavItem mini href="/feed/subscriptions" icon={Tv} label="Subscriptions" />
       <NavItem mini href={viewer ? "/feed/you" : "/signin"} icon={UserSquare} label="You" />
+    </nav>
+  );
+}
+
+// The bottom tab bar from the YouTube app, phones only.
+function BottomTabs({ viewer }: { viewer: Viewer | null }) {
+  const pathname = usePathname();
+  const tabs = [
+    { href: "/", icon: Home, label: "Home", active: pathname === "/" },
+    { href: "/shorts", icon: Smartphone, label: "Shorts", active: pathname.startsWith("/shorts") },
+    null,
+    { href: "/feed/subscriptions", icon: Tv, label: "Subscriptions", active: pathname === "/feed/subscriptions" },
+    { href: viewer ? "/feed/you" : "/signin", icon: UserSquare, label: "You", active: pathname === "/feed/you" },
+  ];
+  return (
+    <nav
+      aria-label="Tabs"
+      className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-line/60 bg-bg pb-[env(safe-area-inset-bottom)] sm:hidden"
+    >
+      {tabs.map((t) =>
+        t ? (
+          <Link
+            key={t.href}
+            href={t.href}
+            aria-current={t.active ? "page" : undefined}
+            className={cn("flex h-14 flex-col items-center justify-center gap-0.5 text-[10px]", t.active ? "font-medium" : "text-fg/75")}
+          >
+            <t.icon className={cn("size-6", t.active && "stroke-[2.4]")} />
+            {t.label}
+          </Link>
+        ) : (
+          <Link
+            key="create"
+            href={viewer ? "/studio/upload" : "/signin?callbackUrl=/studio/upload"}
+            aria-label="Create"
+            className="grid h-14 place-items-center"
+          >
+            <span className="grid size-10 place-items-center rounded-full border border-line bg-surface-2">
+              <Plus className="size-6" />
+            </span>
+          </Link>
+        ),
+      )}
     </nav>
   );
 }
