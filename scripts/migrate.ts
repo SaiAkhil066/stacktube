@@ -8,7 +8,8 @@ import postgres from "postgres";
 config({ path: [".env.local", ".env"] });
 
 async function main() {
-  const url = process.env.DATABASE_URL;
+  // Prefer a direct (non-pooled) connection for schema changes when the host provides one.
+  const url = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
   if (!url) {
     console.log("migrate: no DATABASE_URL, skipping (local PGlite migrates on startup)");
     return;
